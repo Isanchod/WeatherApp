@@ -1,4 +1,4 @@
-package com.weatherApp.ui
+package com.weatherApp.core.ui
 
 import com.weatherApp.R
 import android.os.Bundle
@@ -6,7 +6,6 @@ import android.view.View
 import android.graphics.Color
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -14,9 +13,9 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import java.time.format.DateTimeFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.weatherApp.ApplicationContext
-import com.weatherApp.data.db.WeatherEntity
-import com.weatherApp.utils.ChartMode
+import com.weatherApp.core.domain.model.Weather
+import com.weatherApp.core.utils.ChartMode
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDateTime
 
 class TemperatureChartFragment : Fragment(R.layout.fragment_temperature_chart) {
@@ -37,17 +36,16 @@ class TemperatureChartFragment : Fragment(R.layout.fragment_temperature_chart) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chart = view.findViewById(R.id.lineChart)
-
-        val viewModel= WeatherViewModel(ApplicationContext.repository)
-        viewModel.refreshWeather(viewModel.getLocation().second,viewModel.getLocation().third)
+        val viewModel: WeatherViewModel by viewModel()
+        viewModel.refreshWeather()
         viewModel.loadWeather(mode)
-        viewModel.weather.observe(viewLifecycleOwner) { data:List<WeatherEntity> ->
+        viewModel.weather.observe(viewLifecycleOwner) { data:List<Weather> ->
             updateChart(chart, data)
         }
 
     }
 
-    private fun updateChart(chart: LineChart, data: List<WeatherEntity>) {
+    private fun updateChart(chart: LineChart, data: List<Weather>) {
         if (data.isEmpty()) {
             chart.clear()
             chart.invalidate()
@@ -61,10 +59,10 @@ class TemperatureChartFragment : Fragment(R.layout.fragment_temperature_chart) {
             entries.add(Entry(index.toFloat(), entity.temperature.toFloat()))
 
             val label = try {
-                val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
+                val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd\'T\'HH:mm")
                 val dateTime = LocalDateTime.parse(entity.time, inputFormatter)
-                dateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
-            } catch (e: Exception) {
+                dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH"))
+            } catch (_:Exception) {
                 entity.time
             }
             labels.add(label)

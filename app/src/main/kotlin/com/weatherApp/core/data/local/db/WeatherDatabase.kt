@@ -1,4 +1,4 @@
-package com.weatherApp.data.db
+package com.weatherApp.core.data.local.db
 
 import android.content.Context
 import androidx.room.Database

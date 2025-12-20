@@ -12,27 +12,27 @@
     />
     <EditText
         android:id="@+id/editCity"
-        android:hint="Name"
+        android:hint="@string/name"
         android:layout_height="45dp"
         android:layout_width="match_parent"/>
 
     <EditText
         android:id="@+id/editLatitude"
-        android:hint="Latitude"
+        android:hint="@string/latitude"
         android:inputType="numberSigned|numberDecimal"
         android:layout_height="45dp"
         android:layout_width="match_parent"/>
 
     <EditText
         android:id="@+id/editLongitude"
-        android:hint="Longitude"
+        android:hint="@string/longitude"
         android:inputType="numberSigned|numberDecimal"
         android:layout_height="45dp"
         android:layout_width="match_parent"/>
 
     <Button
         android:id="@+id/btnSave"
-        android:text="Save location"
+        android:text="@string/save_location"
         android:layout_height="45dp"
         android:layout_width="match_parent"/>
 

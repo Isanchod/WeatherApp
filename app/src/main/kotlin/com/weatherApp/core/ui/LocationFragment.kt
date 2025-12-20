@@ -1,4 +1,4 @@
-package com.weatherApp.ui
+package com.weatherApp.core.ui
 
 import android.os.Bundle
 import com.weatherApp.R
@@ -8,22 +8,22 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.weatherApp.ApplicationContext
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LocationFragment : Fragment(R.layout.fragment_location){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val repository = ApplicationContext.repository
+        val viewModel: WeatherViewModel by viewModel()
         val cityEdit = view.findViewById<EditText>(R.id.editCity)
         val latEdit = view.findViewById<EditText>(R.id.editLatitude)
         val lonEdit = view.findViewById<EditText>(R.id.editLongitude)
         val saveBtn = view.findViewById<Button>(R.id.btnSave)
 
-        if(repository.getSavedLocation().first == null) {
-            updateCurrentDataTextView(view,String.format("No data saved. Save a new city!"))
+        if(viewModel.getLocation().first == null) {
+            updateCurrentDataTextView(view,getString(R.string.no_data))
         }else{
-            updateCurrentDataTextView(view,String.format("Current data: city name: %s, latitude: %f, longitude: %f",
-                repository.getSavedLocation().first,repository.getSavedLocation().second,repository.getSavedLocation().third))
+            updateCurrentDataTextView(view,getString(R.string.saved_data,
+                viewModel.getLocation().first,viewModel.getLocation().second,viewModel.getLocation().third))
         }
 
         saveBtn.setOnClickListener {
@@ -31,13 +31,13 @@ class LocationFragment : Fragment(R.layout.fragment_location){
             val lat = latEdit.text.toString()
             val lon = lonEdit.text.toString()
             if (city.isEmpty() || lat.isEmpty() || lon.isEmpty()){
-                Toast.makeText(requireContext(), "One of the fields is empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.error_empty_field), Toast.LENGTH_SHORT).show()
             }
             else{
-                repository.saveLocation(city, lat.toDouble(), lon.toDouble())
-                Toast.makeText(requireContext(), "Saved location", Toast.LENGTH_SHORT).show()
-                updateCurrentDataTextView(view,String.format("Current data: city name: %s, latitude: %f, longitude: %f",
-                    repository.getSavedLocation().first,repository.getSavedLocation().second,repository.getSavedLocation().third))
+                viewModel.saveLocation(city, lat.toDouble(), lon.toDouble())
+                Toast.makeText(requireContext(), getString(R.string.successfully_saved), Toast.LENGTH_SHORT).show()
+                updateCurrentDataTextView(view,getString(R.string.saved_data,
+                    viewModel.getLocation().first,viewModel.getLocation().second,viewModel.getLocation().third))
                 cityEdit.text.clear()
                 latEdit.text.clear()
                 lonEdit.text.clear()

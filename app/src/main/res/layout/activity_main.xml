@@ -8,24 +8,24 @@
 
     <Button
         android:id="@+id/btnModifyLocation"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Set location"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp"
+        android:text="@string/set_location" />
 
     <Button
         android:id="@+id/btnViewChart"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View today's chart"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp"
+        android:text="@string/view_today_s_chart" />
 
     <Button
         android:id="@+id/btnMonthHist"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View historical data"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp"
+        android:text="@string/view_historical_data" />
 
     <FrameLayout
         android:id="@+id/fragmentContainer"

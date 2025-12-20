@@ -1,7 +1,7 @@
-package com.weatherApp.data.firebase
+package com.weatherApp.core.data.remote.firebase
 
 import com.google.firebase.database.FirebaseDatabase
-import com.weatherApp.data.db.WeatherEntity
+import com.weatherApp.core.domain.model.Weather
 import kotlinx.coroutines.tasks.await
 
 class FirebaseService {
@@ -9,10 +9,10 @@ class FirebaseService {
     private val db = FirebaseDatabase.getInstance("https://mi-proyecto-con-firebase-default-rtdb.europe-west1.firebasedatabase.app/")
     private val weatherRef = db.getReference("weatherData")
 
-    suspend fun getWeatherData(): List<WeatherEntity> {
+    suspend fun getWeatherData(): List<Weather> {
         val snapshot = weatherRef.orderByChild("time").get().await()
         return snapshot.children.mapNotNull {
-            it.getValue(WeatherEntity::class.java)?.copy()
+            it.getValue(Weather::class.java)?.copy()
         }
     }
 
@@ -26,9 +26,9 @@ class FirebaseService {
     }
 
 
-    suspend fun addWeatherData(weatherEntity: WeatherEntity) {
+    suspend fun addWeatherData(weatherData: Weather) {
         try {
-            weatherRef.child(weatherEntity.time).setValue(weatherEntity).await()
+            weatherRef.child(weatherData.time).setValue(weatherData).await()
         } catch (e: Exception) {
             throw e
         }

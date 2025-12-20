@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        android:text="Temperatures"
+        android:text="@string/temperatures"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:gravity="center"
         android:layout_width="match_parent"

@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="no_data">No data saved. Save a new city!</string>
+    <string name="saved_data">Current data: city name: %s, latitude: %f, longitude: %f</string>
+    <string name="successfully_saved">Location saved successfully</string>
+    <string name="error_empty_field">One of the fields is empty</string>
+    <string name="set_location">Set location</string>
+    <string name="view_today_s_chart">View today\'s chart</string>
+    <string name="view_historical_data">View historical data</string>
+    <string name="name">Name</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="save_location">Save location</string>
+    <string name="temperatures">Temperatures</string>
+
 </resources>

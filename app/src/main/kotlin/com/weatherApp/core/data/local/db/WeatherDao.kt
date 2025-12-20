@@ -1,6 +1,5 @@
-package com.weatherApp.data.db
+package com.weatherApp.core.data.local.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query

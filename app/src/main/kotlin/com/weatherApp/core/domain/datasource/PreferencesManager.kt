@@ -1,4 +1,4 @@
-package com.weatherApp.utils
+package com.weatherApp.core.domain.datasource
 
 import android.content.Context
 import android.content.SharedPreferences

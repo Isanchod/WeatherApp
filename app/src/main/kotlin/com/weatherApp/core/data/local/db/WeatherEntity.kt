@@ -1,4 +1,4 @@
-package com.weatherApp.data.db
+package com.weatherApp.core.data.local.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
