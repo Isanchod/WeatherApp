@@ -6,29 +6,32 @@ import kotlinx.coroutines.tasks.await
 
 class FirebaseService {
 
-    //TODO definir referencia e instancia de BBDD
+    private val database = FirebaseDatabase.getInstance("https://weatherapp-3b321-default-rtdb.europe-west1.firebasedatabase.app/")
+    private val weatherRef = database.getReference("weather")
 
-    /**
-     * TODO obtiene todos los registros almacenados en la BBDD, ordenados por fecha y hora
-     * Devuelve un listado de Weather
-     */
     suspend fun getWeatherData(): List<Weather> {
-        return emptyList()
+        val snapshot = weatherRef.get().await()
+        return snapshot.children.mapNotNull {
+            it.getValue(Weather::class.java)
+        }.sortedBy { it.time }
     }
 
-    /**
-     * TODO obtiene todos los IDs (fecha/hora) de los registros almacenados en la BBDD
-     * No es necesario implementarla si no la necesitáis en vuestra solución
-     */
     suspend fun getExistingWeatherIds(): Set<String> {
-        return emptySet()
+        val snapshot = weatherRef.get().await()
+        return snapshot.children.mapNotNull {
+            it.key
+        }.toSet()
     }
 
-    /**
-     * TODO añade un nuevo registro a la BBDD
-     * La clave del registro debe ser la fecha y hora
-     */
     suspend fun addWeatherData(weatherData: Weather) {
+        try {
+            val time = weatherData.time
+            if (time != null) {
+                weatherRef.child(time).setValue(weatherData).await()
+            }
+        } catch (e: Exception) {
+            throw e
+            }
+        }
     }
-}
 

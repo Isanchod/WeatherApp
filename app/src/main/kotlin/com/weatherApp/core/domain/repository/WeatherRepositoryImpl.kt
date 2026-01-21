@@ -13,6 +13,7 @@ class WeatherRepositoryImpl(
     private val dao: WeatherDao,
     private val api: WeatherApiService,
     private val prefs: PreferencesManager,
+    private val firebase: FirebaseService
 
 ):WeatherRepository {
 
@@ -45,17 +46,21 @@ class WeatherRepositoryImpl(
         return dao.retrieveWeatherData().map{it.toDomain()}
     }
 
-    /**
-     * TODO obtiene todos los registros de la BBDD
-     */
     override suspend fun getHistoricWeather(): List<Weather> {
-        return emptyList()
+        return firebase.getWeatherData()
     }
 
     /**
      * TODO añade solo los elementos cuya clave no exista ya en la BBDD remota
      */
     private suspend fun syncWithFirebase(data: List<Weather>) {
+        val existingIds = firebase.getExistingWeatherIds()
+        data.forEach { weather ->
+            if (!existingIds.contains(weather.time)) {
+                firebase.addWeatherData(weather)
+            }
+        }
+
     }
 }
 
