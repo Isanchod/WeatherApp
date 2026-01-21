@@ -8,11 +8,12 @@ import com.weatherApp.core.domain.datasource.PreferencesManager
 import com.weatherApp.core.data.mapper.toDomain
 import com.weatherApp.core.data.mapper.toEntity
 
+//TODO incluir la referencia a la BBDD remota (Firebase)
 class WeatherRepositoryImpl(
     private val dao: WeatherDao,
     private val api: WeatherApiService,
     private val prefs: PreferencesManager,
-    private val firebase: FirebaseService
+
 ):WeatherRepository {
 
     override fun getSavedLocation(): Triple<String?, Float?, Float?> {
@@ -44,19 +45,17 @@ class WeatherRepositoryImpl(
         return dao.retrieveWeatherData().map{it.toDomain()}
     }
 
+    /**
+     * TODO obtiene todos los registros de la BBDD
+     */
     override suspend fun getHistoricWeather(): List<Weather> {
-        return firebase.getWeatherData()
+        return emptyList()
     }
 
+    /**
+     * TODO añade solo los elementos cuya clave no exista ya en la BBDD remota
+     */
     private suspend fun syncWithFirebase(data: List<Weather>) {
-        val existingIds = firebase.getExistingWeatherIds()
-
-        data.forEach { weather ->
-            val id = weather.time
-            if (id in existingIds) {
-                firebase.addWeatherData(weather)
-            }
-        }
     }
 }
 
